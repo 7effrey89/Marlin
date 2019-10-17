@@ -604,7 +604,7 @@
 #if ENABLED(Z_STEPPER_AUTO_ALIGN)
   // Define probe X and Y positions for Z1, Z2 [, Z3]
 
-  #define Z_STEPPER_ALIGN_XY ]{ X_PROBE_OFFSET_FROM_EXTRUDER , (X_BED_SIZE - (MIN_PROBE_EDGE)) }, { Y_BED_SIZE/2,Y_BED_SIZE/2 }}//{ {  10, 290 }, { 150,  10 }, { 290, 290 } }
+  #define Z_STEPPER_ALIGN_XY { {  MIN_PROBE_EDGE, Y_BED_SIZE/2 }, { X_BED_SIZE-MIN_PROBE_EDGE,  Y_BED_SIZE/2 } }
 
   // Provide Z stepper positions for more rapid convergence in bed alignment.
   // Currently requires triple stepper drivers.
@@ -1842,14 +1842,14 @@
   #endif
 
   #if AXIS_IS_TMC(Z)
-    #define Y_CURRENT     760 //Jeff Org: 800
+    #define Z_CURRENT     760 //Jeff Org: 800
     #define Z_MICROSTEPS   16
     #define Z_RSENSE     0.11
     #define Z_CHAIN_POS    -1
   #endif
 
   #if AXIS_IS_TMC(Z2)
-    #define Z2_CURRENT    800
+    #define Z2_CURRENT    760
     #define Z2_MICROSTEPS  16
     #define Z2_RSENSE    0.11
     #define Z2_CHAIN_POS   -1
@@ -1863,13 +1863,13 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define Y_CURRENT     760 //Jeff Org: 800
+    #define E0_CURRENT     760 //Jeff Org: 800
     #define E0_MICROSTEPS  16
     #define E0_RSENSE    0.11
     #define E0_CHAIN_POS   -1
   #endif
 
-  #if AXIS_IS_TMC(E1)
+  #if AXIS_IS_TMC(Z) //Den virkede ikke da der stod E1
     #define E1_CURRENT    800
     #define E1_MICROSTEPS  16
     #define E1_RSENSE    0.11
