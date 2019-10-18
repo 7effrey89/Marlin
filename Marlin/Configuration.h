@@ -673,10 +673,10 @@
 #define Z_DRIVER_TYPE  TMC2209//TMC2130 //Jef Org:Disabled A4988  
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
-//#define Z2_DRIVER_TYPE TMC2209
+#define Z2_DRIVER_TYPE TMC2209
 //#define Z3_DRIVER_TYPE A4988
 #define E0_DRIVER_TYPE TMC2209 //Jef Org:Disabled A4988  
-#define E1_DRIVER_TYPE TMC2209 //Jef Org:Disabled A4988 
+//#define E1_DRIVER_TYPE TMC2209 //Jef Org:Disabled A4988 
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -1031,7 +1031,7 @@
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR true//Jeff Org: false
 #define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+#define INVERT_Z_DIR true //Jeff Org: false
 
 // @section extruder
 
