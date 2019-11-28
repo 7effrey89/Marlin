@@ -490,9 +490,9 @@
   //#define DEFAULT_Kd 440
 
   //Jef Printer
-  #define DEFAULT_Kp 32.30
-  #define DEFAULT_Ki 3.03
-  #define DEFAULT_Kd 86.00
+  #define DEFAULT_Kp 25.36
+  #define DEFAULT_Ki 2.03
+  #define DEFAULT_Kd 79.21
 #endif // PIDTEMP
 
 //===========================================================================
@@ -542,9 +542,13 @@
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
   //Jeff Printer
-  #define DEFAULT_bedKp 312.01 //Jeff
-  #define DEFAULT_bedKi 16.21 //Jeff
-  #define DEFAULT_bedKd 1501.63 //Jeff
+  // #define DEFAULT_bedKp 312.01 //Jeff
+  // #define DEFAULT_bedKi 16.21 //Jeff
+  // #define DEFAULT_bedKd 1501.63 //Jeff
+  #define DEFAULT_bedKp 48.89
+  #define DEFAULT_bedKi 1.50
+  #define DEFAULT_bedKd 1064.97
+  
 #endif // PIDTEMPBED
 
 // @section extruder
@@ -1036,7 +1040,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#define INVERT_E0_DIR true //Jeff Org: false
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
