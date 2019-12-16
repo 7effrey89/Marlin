@@ -72,7 +72,7 @@
 
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "Jeffrey Lai SKR 1.3 Config" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "Jeffrey Lai SKR 1.3 BLV Config" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -148,7 +148,7 @@
 #define EXTRUDERS 1
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
-#define DEFAULT_NOMINAL_FILAMENT_DIA 3.0
+#define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
 //#define SINGLENOZZLE
@@ -490,9 +490,9 @@
   //#define DEFAULT_Kd 440
 
   //Jef Printer
-  #define DEFAULT_Kp 25.36
-  #define DEFAULT_Ki 2.03
-  #define DEFAULT_Kd 79.21
+  #define DEFAULT_Kp 17.04
+  #define DEFAULT_Ki 1.36
+  #define DEFAULT_Kd 53.21
 #endif // PIDTEMP
 
 //===========================================================================
@@ -545,9 +545,9 @@
   // #define DEFAULT_bedKp 312.01 //Jeff
   // #define DEFAULT_bedKi 16.21 //Jeff
   // #define DEFAULT_bedKd 1501.63 //Jeff
-  #define DEFAULT_bedKp 48.89
-  #define DEFAULT_bedKi 1.50
-  #define DEFAULT_bedKd 1064.97
+  #define DEFAULT_bedKp 52.84
+  #define DEFAULT_bedKd 1272.23
+  #define DEFAULT_bedKi 1.46
   
 #endif // PIDTEMPBED
 
@@ -599,7 +599,7 @@
 
 // Uncomment one of these options to enable CoreXY, CoreXZ, or CoreYZ kinematics
 // either in the usual order or reversed
-//#define COREXY
+#define COREXY
 //#define COREXZ
 //#define COREYZ
 //#define COREYX
@@ -618,19 +618,19 @@
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
-#define USE_XMAX_PLUG //Jef Org:Disabled
-#define USE_YMAX_PLUG //Jef Org:Disabled
-#define USE_ZMAX_PLUG //Jef Org:Disabled
+//#define USE_XMAX_PLUG //Jef Org:Disabled
+//#define USE_YMAX_PLUG //Jef Org:Disabled
+//#define USE_ZMAX_PLUG //Jef Org:Disabled
 
 // Enable pullup for all endstops to prevent a floating state
 #define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
-  //#define ENDSTOPPULLUP_XMAX
-  //#define ENDSTOPPULLUP_YMAX
+  #define ENDSTOPPULLUP_XMAX
+  #define ENDSTOPPULLUP_YMAX
   //#define ENDSTOPPULLUP_ZMAX
-  //#define ENDSTOPPULLUP_XMIN //need to enable if sensorless jef //Jef Org:Disabled
-  //#define ENDSTOPPULLUP_YMIN
+  #define ENDSTOPPULLUP_XMIN //need to enable if sensorless jef //Jef Org:Disabled
+  #define ENDSTOPPULLUP_YMIN
   //#define ENDSTOPPULLUP_ZMIN
   //#define ENDSTOPPULLUP_ZMIN_PROBE
 #endif
@@ -649,8 +649,8 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#define X_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
-#define Y_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
+#define X_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
+#define Y_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
@@ -729,7 +729,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 415 }//32Step
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 96, 96, 800, 415 }//32Step
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -749,7 +749,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 } //Jeff org:{ 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 3000 }//{ 2000, 2000, 100, 10000 } //Jeff org:{ 3000, 3000, 100, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -764,9 +764,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          2000 //Jeff org:3000    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          3000//2000 //Jeff org:3000    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   2000 //Jeff org: 3000    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   3000//2000 //Jeff org: 3000    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -934,13 +934,13 @@
  * Specify a Probe position as { X, Y, Z }
  */
 
-#define NOZZLE_TO_PROBE_OFFSET { 30, -7, -1.2 } // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
+#define NOZZLE_TO_PROBE_OFFSET { 30, 3.5, 0 } // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 10
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 4000 //Jeff Org: 8000
+#define XY_PROBE_SPEED 8000//4000 //Jeff Org: 8000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1033,14 +1033,14 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true//Jeff Org: false
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR true //Jeff Org: false
+#define INVERT_X_DIR false
+#define INVERT_Y_DIR false
+#define INVERT_Z_DIR false 
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true //Jeff Org: false
+#define INVERT_E0_DIR false //Jeff Org: false
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -1065,16 +1065,16 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 204 //Jeff Org: 200
-#define Y_BED_SIZE 193 //Jeff Org: 200
+#define X_BED_SIZE 245 //Jeff Org: 200
+#define Y_BED_SIZE 200 //Jeff Org: 200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -60//0 //Jeff
+#define Y_MIN_POS -70//0 //Jeff
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 200
+#define X_MAX_POS 245//X_BED_SIZE //Jeff
+#define Y_MAX_POS 200//Y_BED_SIZE //Jeff
+#define Z_MAX_POS 300//200 //Jeff
 
 /**
  * Software Endstops
@@ -1337,15 +1337,15 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing when homing all axes (G28).
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-//#define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
-  #define Z_SAFE_HOMING_Y_POINT ((Y_BED_SIZE) / 2)    // Y point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_X_POINT 0//((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_Y_POINT 0//((Y_BED_SIZE) / 2)    // Y point for Z homing when homing all axes (G28).
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (35*60) //Jeff Org: (50*60)
+#define HOMING_FEEDRATE_XY (50*60) //Jeff Org: (50*60)
 #define HOMING_FEEDRATE_Z  (8*60) //Jeff Org: (4*60)
 
 // Validate that endstops are triggered on homing moves
@@ -1459,7 +1459,7 @@
 
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 200
+#define PREHEAT_1_TEMP_HOTEND 205
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
