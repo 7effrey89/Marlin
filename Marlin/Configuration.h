@@ -653,11 +653,11 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
+#define Z_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop. //need to be false with MINI IR //inductive sensor true
 #define X_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the probe. //need to be false with MINI IR //inductive sensor true
 //Jef: M119 to check endstops
 /**
  * Stepper Drivers
@@ -731,7 +731,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 96, 96, 800, 415 }//32Step
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 96, 96, 800, 207.5 } //{ 96, 96, 800, 415 }//32Step
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1115,7 +1115,7 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-//#define FILAMENT_RUNOUT_SENSOR
+#define FILAMENT_RUNOUT_SENSOR //Jeff org: disabled 
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #define FIL_RUNOUT_INVERTING false // Set to true to invert the logic of the sensor.
@@ -1129,13 +1129,13 @@
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  //#define FILAMENT_RUNOUT_DISTANCE_MM 25
+  #define FILAMENT_RUNOUT_DISTANCE_MM 7 //Jeff org: 25 
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
     // as the filament moves. (Be sure to set FILAMENT_RUNOUT_DISTANCE_MM
     // large enough to avoid false positives.)
-    //#define FILAMENT_MOTION_SENSOR
+    #define FILAMENT_MOTION_SENSOR //Jeff org: disabled 
   #endif
 #endif
 
@@ -1481,11 +1481,11 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE //Jeff org: disabled 
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS - 10), (Y_MAX_POS - 10), 20 } //Jeff org:{ (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 5      // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
