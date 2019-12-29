@@ -1150,7 +1150,7 @@
      *
      * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
      */
-    //#define SDCARD_CONNECTION LCD
+    #define SDCARD_CONNECTION ONBOARD //Jeff: Org Undefined //#define SDCARD_CONNECTION LCD
   #endif
 
 #endif // SDSUPPORT
@@ -1543,7 +1543,7 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-#define MINIMUM_STEPPER_PULSE 1 //Jeff: undefined and value: 2
+//#define MINIMUM_STEPPER_PULSE 1 //Jeff: undefined and value: 2
 
 /**
  * Maximum stepping rate (in Hz) the stepper driver allows
@@ -1936,8 +1936,8 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      760 //Jeff Org: 800
-    #define E0_MICROSTEPS    16
+    #define E0_CURRENT      1000 //Jeff Org: 800
+    #define E0_MICROSTEPS    32
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
   #endif
@@ -2154,7 +2154,7 @@
    * Beta feature!
    * Create a 50/50 square wave step pulse optimal for stepper drivers.
    */
-  #define SQUARE_WAVE_STEPPING //Jeff Org: Disabled
+  //#define SQUARE_WAVE_STEPPING //Jeff Org: Disabled
 
   /**
    * Enable M122 debugging command for TMC stepper drivers.
