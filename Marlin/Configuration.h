@@ -650,6 +650,8 @@
   //#define ENDSTOPPULLDOWN_ZMIN_PROBE
 #endif
 
+//M851 X-2.00 Y-21.40 --MINI IR
+//M851 X30 Y-3.5 --inductive
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
