@@ -28,9 +28,6 @@
 
   unified_bed_leveling ubl;
 
-  #include "../../../MarlinCore.h"
-  #include "../../../gcode/gcode.h"
-
   #include "../../../module/configuration_store.h"
   #include "../../../module/planner.h"
   #include "../../../module/motion.h"
@@ -154,7 +151,9 @@
    *   4: Compact Human-Readable
    */
   void unified_bed_leveling::display_map(const int map_type) {
-    const bool was = gcode.set_autoreport_paused(true);
+    #if HAS_AUTO_REPORTING || ENABLED(HOST_KEEPALIVE_FEATURE)
+      suspend_auto_report = true;
+    #endif
 
     constexpr uint8_t eachsp = 1 + 6 + 1,                           // [-3.567]
                       twixt = eachsp * (GRID_MAX_POINTS_X) - 9 * 2; // Leading 4sp, Coordinates 9sp each
@@ -230,7 +229,9 @@
       SERIAL_EOL();
     }
 
-    gcode.set_autoreport_paused(was);
+    #if HAS_AUTO_REPORTING || ENABLED(HOST_KEEPALIVE_FEATURE)
+      suspend_auto_report = false;
+    #endif
   }
 
   bool unified_bed_leveling::sanity_check() {

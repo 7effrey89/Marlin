@@ -23,9 +23,6 @@
 /**
  * Description: functions for I2C connected external EEPROM.
  * Not platform dependent.
- *
- * TODO: Some platform Arduino libraries define these functions
- *       so Marlin needs to add a glue layer to prevent the conflict.
  */
 
 #include "../../inc/MarlinConfig.h"

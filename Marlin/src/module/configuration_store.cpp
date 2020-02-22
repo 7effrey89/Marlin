@@ -323,7 +323,7 @@ typedef struct SettingsDataStruct {
   //
   // LIN_ADVANCE
   //
-  float planner_extruder_advance_K[_MAX(EXTRUDERS, 1)]; // M900 K  planner.extruder_advance_K
+  float planner_extruder_advance_K[EXTRUDERS];          // M900 K  planner.extruder_advance_K
 
   //
   // HAS_MOTOR_CURRENT_PWM
@@ -2766,18 +2766,9 @@ void MarlinSettings::reset() {
 
 #if DISABLED(DISABLE_M503)
 
-  static void config_heading(const bool repl, PGM_P const pstr, const bool eol=true) {
-    if (!repl) {
-      SERIAL_ECHO_START();
-      SERIAL_ECHOPGM("; ");
-      serialprintPGM(pstr);
-      if (eol) SERIAL_EOL();
-    }
-  }
-
   #define CONFIG_ECHO_START()       do{ if (!forReplay) SERIAL_ECHO_START(); }while(0)
   #define CONFIG_ECHO_MSG(STR)      do{ CONFIG_ECHO_START(); SERIAL_ECHOLNPGM(STR); }while(0)
-  #define CONFIG_ECHO_HEADING(STR)  config_heading(forReplay, PSTR(STR))
+  #define CONFIG_ECHO_HEADING(STR)  do{ if (!forReplay) { CONFIG_ECHO_START(); SERIAL_ECHOLNPGM(STR); } }while(0)
 
   #if HAS_TRINAMIC
     inline void say_M906(const bool forReplay) { CONFIG_ECHO_START(); SERIAL_ECHOPGM("  M906"); }
@@ -2861,7 +2852,8 @@ void MarlinSettings::reset() {
        * Volumetric extrusion M200
        */
       if (!forReplay) {
-        config_heading(forReplay, PSTR("Filament settings:"), false);
+        CONFIG_ECHO_START();
+        SERIAL_ECHOPGM("Filament settings:");
         if (parser.volumetric_enabled)
           SERIAL_EOL();
         else
@@ -2935,18 +2927,20 @@ void MarlinSettings::reset() {
       , SP_T_STR, LINEAR_UNIT(planner.settings.travel_acceleration)
     );
 
-    CONFIG_ECHO_HEADING(
-      "Advanced: B<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate>"
+    if (!forReplay) {
+      CONFIG_ECHO_START();
+      SERIAL_ECHOPGM("Advanced: B<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate>");
       #if DISABLED(CLASSIC_JERK)
-        " J<junc_dev>"
+        SERIAL_ECHOPGM(" J<junc_dev>");
       #endif
       #if HAS_CLASSIC_JERK
-        " X<max_x_jerk> Y<max_y_jerk> Z<max_z_jerk>"
+        SERIAL_ECHOPGM(" X<max_x_jerk> Y<max_y_jerk> Z<max_z_jerk>");
         #if HAS_CLASSIC_E_JERK
-          " E<max_e_jerk>"
+          SERIAL_ECHOPGM(" E<max_e_jerk>");
         #endif
       #endif
-    );
+      SERIAL_EOL();
+    }
     CONFIG_ECHO_START();
     SERIAL_ECHOLNPAIR_P(
         PSTR("  M205 B"), LINEAR_UNIT(planner.settings.min_segment_time_us)
@@ -3004,11 +2998,10 @@ void MarlinSettings::reset() {
 
       #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
-        config_heading(forReplay, PSTR(""), false);
         if (!forReplay) {
+          CONFIG_ECHO_START();
           ubl.echo_name();
-          SERIAL_CHAR(':');
-          SERIAL_EOL();
+          SERIAL_ECHOLNPGM(":");
         }
 
       #elif HAS_ABL_OR_UBL
@@ -3044,12 +3037,8 @@ void MarlinSettings::reset() {
         if (!forReplay) {
           SERIAL_EOL();
           ubl.report_state();
-          SERIAL_EOL();
-          config_heading(false, PSTR("Active Mesh Slot: "), false);
-          SERIAL_ECHOLN(ubl.storage_slot);
-          config_heading(false, PSTR("EEPROM can hold "), false);
-          SERIAL_ECHO(calc_num_meshes());
-          SERIAL_ECHOLNPGM(" meshes.\n");
+          SERIAL_ECHOLNPAIR("\nActive Mesh Slot: ", ubl.storage_slot);
+          SERIAL_ECHOLNPAIR("EEPROM can hold ", calc_num_meshes(), " meshes.\n");
         }
 
        //ubl.report_current_mesh();   // This is too verbose for large meshes. A better (more terse)
@@ -3259,8 +3248,11 @@ void MarlinSettings::reset() {
      * Probe Offset
      */
     #if HAS_BED_PROBE
-      config_heading(forReplay, PSTR("Z-Probe Offset"), false);
-      if (!forReplay) say_units(true);
+      if (!forReplay) {
+        CONFIG_ECHO_START();
+        SERIAL_ECHOPGM("Z-Probe Offset");
+        say_units(true);
+      }
       CONFIG_ECHO_START();
       SERIAL_ECHOLNPAIR_P(
         #if HAS_PROBE_XY_OFFSET
