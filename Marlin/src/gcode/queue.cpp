@@ -253,8 +253,8 @@ void GCodeQueue::ok_to_send() {
       while (NUMERIC_SIGNED(*p))
         SERIAL_ECHO(*p++);
     }
-    SERIAL_ECHOPAIR_P(SP_P_STR, int(BLOCK_BUFFER_SIZE - planner.movesplanned() - 1));
-    SERIAL_ECHOPAIR(" B", BUFSIZE - length);
+    SERIAL_ECHOPAIR_P(SP_P_STR, int(planner.moves_free()));
+    SERIAL_ECHOPAIR(" B", int(BUFSIZE - length));
   #endif
   SERIAL_EOL();
 }
@@ -364,9 +364,9 @@ inline void process_stream_char(const char c, uint8_t &sis, char (&buff)[MAX_CMD
 inline bool process_line_done(uint8_t &sis, char (&buff)[MAX_CMD_SIZE], int &ind) {
   sis = PS_NORMAL;
   buff[ind] = 0;
-  if (!ind) { thermalManager.manage_heater(); return true; }
-  ind = 0;
-  return false;
+  if (ind) { ind = 0; return false; }
+  thermalManager.manage_heater();
+  return true;
 }
 
 /**
@@ -415,11 +415,13 @@ void GCodeQueue::get_serial_commands() {
 
       if (serial_char == '\n' || serial_char == '\r') {
 
-        process_line_done(serial_input_state[i], serial_line_buffer[i], serial_count[i]);
+        // Reset our state, continue if the line was empty
+        if (process_line_done(serial_input_state[i], serial_line_buffer[i], serial_count[i]))
+          continue;
 
         char* command = serial_line_buffer[i];
 
-        while (*command == ' ') command++;                // Skip leading spaces
+        while (*command == ' ') command++;                   // Skip leading spaces
         char *npos = (*command == 'N') ? command : nullptr;  // Require the N parameter to start the line
 
         if (npos) {
@@ -469,6 +471,7 @@ void GCodeQueue::get_serial_commands() {
               #if ENABLED(BEZIER_CURVE_SUPPORT)
                 case 5:
               #endif
+                PORT_REDIRECT(i);                      // Reply to the serial port that sent the command
                 SERIAL_ECHOLNPGM(MSG_ERR_STOPPED);
                 LCD_MESSAGEPGM(MSG_STOPPED);
                 break;
@@ -536,7 +539,7 @@ void GCodeQueue::get_serial_commands() {
             #if ENABLED(PRINTER_EVENT_LEDS)
               printerEventLEDs.onPrintCompleted();
               #if HAS_RESUME_CONTINUE
-                enqueue_now_P(PSTR("M0 Q S"
+                enqueue_now_P(PSTR("M0 S"
                   #if HAS_LCD_MENU
                     "1800"
                   #else
@@ -550,7 +553,9 @@ void GCodeQueue::get_serial_commands() {
         else if (n < 0)
           SERIAL_ERROR_MSG(MSG_SD_ERR_READ);
 
-        process_line_done(sd_input_state, command_buffer[index_w], sd_count);
+        // Terminate the buffer, reset the input state, continue for empty line
+        if (process_line_done(sd_input_state, command_buffer[index_w], sd_count))
+          continue;
 
         _commit_command(false);
 
