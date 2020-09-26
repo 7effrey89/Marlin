@@ -102,6 +102,10 @@ Stepper stepper; // Singleton
 #include "../MarlinCore.h"
 #include "../HAL/shared/Delay.h"
 
+#if ENABLED(INTEGRATED_BABYSTEPPING)
+  #include "../feature/babystep.h"
+#endif
+
 #if MB(ALLIGATOR)
   #include "../feature/dac/dac_dac084s085.h"
 #endif
@@ -1399,9 +1403,12 @@ void Stepper::isr() {
 
     // Get the interval to the next ISR call
     const uint32_t interval = _MIN(
-      nextMainISR                                       // Time until the next Stepper ISR
+      nextMainISR                                       // Time until the next Pulse / Block phase
       #if ENABLED(LIN_ADVANCE)
         , nextAdvanceISR                                // Come back early for Linear Advance?
+      #endif
+      #if ENABLED(INTEGRATED_BABYSTEPPING)
+        , nextBabystepISR                               // Come back early for Babystepping?
       #endif
       , uint32_t(HAL_TIMER_TYPE_MAX)                    // Come back in a very long time
     );
@@ -1417,6 +1424,10 @@ void Stepper::isr() {
 
     #if ENABLED(LIN_ADVANCE)
       if (nextAdvanceISR != LA_ADV_NEVER) nextAdvanceISR -= interval;
+    #endif
+
+    #if ENABLED(INTEGRATED_BABYSTEPPING)
+      if (nextBabystepISR != BABYSTEP_NEVER) nextBabystepISR -= interval;
     #endif
 
     /**
@@ -2332,6 +2343,16 @@ uint32_t Stepper::block_phase_isr() {
 
 #endif // LIN_ADVANCE
 
+#if ENABLED(INTEGRATED_BABYSTEPPING)
+
+  // Timer interrupt for baby-stepping
+  uint32_t Stepper::babystepping_isr() {
+    babystep.task();
+    return babystep.has_steps() ? BABYSTEP_TICKS : BABYSTEP_NEVER;
+  }
+
+#endif
+
 // Check if the given block is busy or not - Must not be called from ISR contexts
 // The current_block could change in the middle of the read by an Stepper ISR, so
 // we must explicitly prevent that!
@@ -2789,12 +2810,12 @@ void Stepper::report_positions() {
 
   #if IS_CORE
 
-    #define BABYSTEP_CORE(A, B, INV, DIR) do{                   \
+    #define BABYSTEP_CORE(A, B, INV, DIR, ALT) do{              \
       const xy_byte_t old_dir = { _READ_DIR(A), _READ_DIR(B) }; \
       _ENABLE_AXIS(A); _ENABLE_AXIS(B);                         \
       DIR_WAIT_BEFORE();                                        \
       _APPLY_DIR(A, _INVERT_DIR(A)^DIR^INV);                    \
-      _APPLY_DIR(B, _INVERT_DIR(B)^DIR^INV^(CORESIGN(1)<0));    \
+      _APPLY_DIR(B, _INVERT_DIR(B)^DIR^INV^ALT);                \
       DIR_WAIT_AFTER();                                         \
       _SAVE_START();                                            \
       _APPLY_STEP(A, !_INVERT_STEP_PIN(A), true);               \
@@ -2811,8 +2832,11 @@ void Stepper::report_positions() {
 
   // MUST ONLY BE CALLED BY AN ISR,
   // No other ISR should ever interrupt this!
-  void Stepper::babystep(const AxisEnum axis, const bool direction) {
-    cli();
+  void Stepper::do_babystep(const AxisEnum axis, const bool direction) {
+
+    #if DISABLED(INTEGRATED_BABYSTEPPING)
+      cli();
+    #endif
 
     switch (axis) {
 
@@ -2820,9 +2844,9 @@ void Stepper::report_positions() {
 
         case X_AXIS:
           #if CORE_IS_XY
-            BABYSTEP_CORE(X, Y, false, direction);
+            BABYSTEP_CORE(X, Y, 0, direction, 0);
           #elif CORE_IS_XZ
-            BABYSTEP_CORE(X, Z, false, direction);
+            BABYSTEP_CORE(X, Z, 0, direction, 0);
           #else
             BABYSTEP_AXIS(X, 0, direction);
           #endif
@@ -2832,7 +2856,7 @@ void Stepper::report_positions() {
           #if CORE_IS_XY
             BABYSTEP_CORE(X, Y, 1, !direction, (CORESIGN(1)>0));
           #elif CORE_IS_YZ
-            BABYSTEP_CORE(Y, Z, false, direction);
+            BABYSTEP_CORE(Y, Z, 0, direction, (CORESIGN(1)<0));
           #else
             BABYSTEP_AXIS(Y, 0, direction);
           #endif
@@ -2843,9 +2867,9 @@ void Stepper::report_positions() {
       case Z_AXIS: {
 
         #if CORE_IS_XZ
-          BABYSTEP_CORE(X, Z, BABYSTEP_INVERT_Z, direction);
+          BABYSTEP_CORE(X, Z, BABYSTEP_INVERT_Z, direction, (CORESIGN(1)<0));
         #elif CORE_IS_YZ
-          BABYSTEP_CORE(Y, Z, BABYSTEP_INVERT_Z, direction);
+          BABYSTEP_CORE(Y, Z, BABYSTEP_INVERT_Z, direction, (CORESIGN(1)<0));
         #elif DISABLED(DELTA)
           BABYSTEP_AXIS(Z, BABYSTEP_INVERT_Z, direction);
 
@@ -2895,7 +2919,9 @@ void Stepper::report_positions() {
       default: break;
     }
 
-    sei();
+    #if DISABLED(INTEGRATED_BABYSTEPPING)
+      sei();
+    #endif
   }
 
 #endif // BABYSTEPPING

@@ -405,6 +405,17 @@ class Stepper {
       FORCE_INLINE static void initiateLA() { nextAdvanceISR = 0; }
     #endif
 
+    #if ENABLED(INTEGRATED_BABYSTEPPING)
+      // The Babystepping ISR phase
+      static uint32_t babystepping_isr();
+      FORCE_INLINE static void initiateBabystepping() {
+        if (nextBabystepISR == BABYSTEP_NEVER) {
+          nextBabystepISR = 0;
+          wake_up();
+        }
+      }
+    #endif
+
     // Check if the given block is busy or not - Must not be called from ISR contexts
     static bool is_block_busy(const block_t* const block);
 
@@ -490,7 +501,7 @@ class Stepper {
     #endif
 
     #if ENABLED(BABYSTEPPING)
-      static void babystep(const AxisEnum axis, const bool direction); // perform a short step with a single stepper motor, outside of any convention
+      static void do_babystep(const AxisEnum axis, const bool direction); // perform a short step with a single stepper motor, outside of any convention
     #endif
 
     #if HAS_MOTOR_CURRENT_PWM

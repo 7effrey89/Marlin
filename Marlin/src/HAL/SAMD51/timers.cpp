@@ -67,31 +67,59 @@ FORCE_INLINE void Disable_Irq(IRQn_Type irq) {
 // --------------------------------------------------------------------------
 
 void HAL_timer_start(const uint8_t timer_num, const uint32_t frequency) {
-  Tc * const tc = TimerConfig[timer_num].pTimer;
   IRQn_Type irq = TimerConfig[timer_num].IRQ_Id;
 
   // Disable interrupt, just in case it was already enabled
   Disable_Irq(irq);
 
-  // Disable timer interrupt
-  tc->COUNT32.INTENCLR.reg = TC_INTENCLR_OVF; // disable overflow interrupt
+  if (timer_num == RTC_TIMER_NUM) {
+    Rtc * const rtc = TimerConfig[timer_num].pRtc;
 
-  // TCn clock setup
-  const uint8_t clockID = GCLK_CLKCTRL_IDs[TCC_INST_NUM + timer_num];
-  GCLK->PCHCTRL[clockID].bit.CHEN = false;
-  SYNC(GCLK->PCHCTRL[clockID].bit.CHEN);
-  GCLK->PCHCTRL[clockID].reg = GCLK_PCHCTRL_GEN_GCLK0 | GCLK_PCHCTRL_CHEN;   // 120MHz startup code programmed
-  SYNC(!GCLK->PCHCTRL[clockID].bit.CHEN);
+    // Disable timer interrupt
+    rtc->MODE0.INTENCLR.reg = RTC_MODE0_INTENCLR_CMP0;
 
-  // Stop timer, just in case, to be able to reconfigure it
-  tc->COUNT32.CTRLA.bit.ENABLE = false;
-  SYNC(tc->COUNT32.SYNCBUSY.bit.ENABLE);
+    // RTC clock setup
+    OSC32KCTRL->RTCCTRL.reg = OSC32KCTRL_RTCCTRL_RTCSEL_XOSC32K;  // External 32.768KHz oscillator
 
-  // Reset timer
-  tc->COUNT32.CTRLA.bit.SWRST = true;
-  SYNC(tc->COUNT32.SYNCBUSY.bit.SWRST);
+    // Stop timer, just in case, to be able to reconfigure it
+    rtc->MODE0.CTRLA.bit.ENABLE = false;
+    SYNC(rtc->MODE0.SYNCBUSY.bit.ENABLE);
 
-  NVIC_SetPriority(irq, TimerConfig[timer_num].priority);
+    // Mode, reset counter on match
+    rtc->MODE0.CTRLA.reg = RTC_MODE0_CTRLA_MODE_COUNT32 | RTC_MODE0_CTRLA_MATCHCLR;
+
+    // Set compare value
+    rtc->MODE0.COMP[0].reg = (32768 + frequency / 2) / frequency;
+    SYNC(rtc->MODE0.SYNCBUSY.bit.COMP0);
+
+    // Enable interrupt on compare
+    rtc->MODE0.INTFLAG.reg = RTC_MODE0_INTFLAG_CMP0;    // reset pending interrupt
+    rtc->MODE0.INTENSET.reg = RTC_MODE0_INTENSET_CMP0;  // enable compare 0 interrupt
+
+    // And start timer
+    rtc->MODE0.CTRLA.bit.ENABLE = true;
+    SYNC(rtc->MODE0.SYNCBUSY.bit.ENABLE);
+  }
+  else {
+    Tc * const tc = TimerConfig[timer_num].pTc;
+
+    // Disable timer interrupt
+    tc->COUNT32.INTENCLR.reg = TC_INTENCLR_OVF; // disable overflow interrupt
+
+    // TCn clock setup
+    const uint8_t clockID = GCLK_CLKCTRL_IDs[TCC_INST_NUM + timer_num];   // TC clock are preceeded by TCC ones
+    GCLK->PCHCTRL[clockID].bit.CHEN = false;
+    SYNC(GCLK->PCHCTRL[clockID].bit.CHEN);
+    GCLK->PCHCTRL[clockID].reg = GCLK_PCHCTRL_GEN_GCLK0 | GCLK_PCHCTRL_CHEN;   // 120MHz startup code programmed
+    SYNC(!GCLK->PCHCTRL[clockID].bit.CHEN);
+
+    // Stop timer, just in case, to be able to reconfigure it
+    tc->COUNT32.CTRLA.bit.ENABLE = false;
+    SYNC(tc->COUNT32.SYNCBUSY.bit.ENABLE);
+
+    // Reset timer
+    tc->COUNT32.CTRLA.bit.SWRST = true;
+    SYNC(tc->COUNT32.SYNCBUSY.bit.SWRST);
 
     // Wave mode, reset counter on compare match
     tc->COUNT32.WAVE.reg = TC_WAVE_WAVEGEN_MFRQ;
@@ -103,14 +131,17 @@ void HAL_timer_start(const uint8_t timer_num, const uint32_t frequency) {
     tc->COUNT32.CC[0].reg = (HAL_TIMER_RATE) / frequency;
     tc->COUNT32.COUNT.reg = 0;
 
-  // And start timer
-  tc->COUNT32.CTRLA.bit.ENABLE = true;
-  SYNC(tc->COUNT32.SYNCBUSY.bit.ENABLE);
+    // Enable interrupt on compare
+    tc->COUNT32.INTFLAG.reg = TC_INTFLAG_OVF;   // reset pending interrupt
+    tc->COUNT32.INTENSET.reg = TC_INTENSET_OVF; // enable overflow interrupt
 
-  // Enable interrupt on RC compare
-  tc->COUNT32.INTENSET.reg = TC_INTENCLR_OVF; // enable overflow interrupt
+    // And start timer
+    tc->COUNT32.CTRLA.bit.ENABLE = true;
+    SYNC(tc->COUNT32.SYNCBUSY.bit.ENABLE);
+  }
 
   // Finally, enable IRQ
+  NVIC_SetPriority(irq, TimerConfig[timer_num].priority);
   NVIC_EnableIRQ(irq);
 }
 

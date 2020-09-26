@@ -37,8 +37,6 @@ void stop();
 void idle(TERN_(ADVANCED_PAUSE_FEATURE, bool no_stepper_sleep=false));
 inline void idle_no_sleep() { idle(TERN_(ADVANCED_PAUSE_FEATURE, true)); }
 
-void manage_inactivity(const bool ignore_stepper_queue=false);
-
 #if ENABLED(EXPERIMENTAL_I2CBUS)
   #include "feature/twibus.h"
   extern TWIBus i2c;

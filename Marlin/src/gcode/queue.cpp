@@ -405,9 +405,9 @@ inline void process_stream_char(const char c, uint8_t &sis, char (&buff)[MAX_CMD
 inline bool process_line_done(uint8_t &sis, char (&buff)[MAX_CMD_SIZE], int &ind) {
   sis = PS_NORMAL;
   buff[ind] = 0;
-  if (!ind) { thermalManager.manage_heater(); return true; }
-  ind = 0;
-  return false;
+  if (ind) { ind = 0; return false; }
+  thermalManager.manage_heater();
+  return true;
 }
 
 /**
@@ -456,11 +456,13 @@ void GCodeQueue::get_serial_commands() {
 
       if (ISEOL(serial_char)) {
 
-        process_line_done(serial_input_state[i], serial_line_buffer[i], serial_count[i]);
+        // Reset our state, continue if the line was empty
+        if (process_line_done(serial_input_state[i], serial_line_buffer[i], serial_count[i]))
+          continue;
 
         char* command = serial_line_buffer[i];
 
-        while (*command == ' ') command++;                // Skip leading spaces
+        while (*command == ' ') command++;                   // Skip leading spaces
         char *npos = (*command == 'N') ? command : nullptr;  // Require the N parameter to start the line
 
         if (npos) {
