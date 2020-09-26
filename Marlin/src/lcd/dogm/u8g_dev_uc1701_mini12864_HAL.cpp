@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -112,13 +112,14 @@ static const uint8_t u8g_dev_uc1701_mini12864_HAL_init_seq[] PROGMEM = {
   U8G_ESC_CS(1),              // enable chip
   UC1701_ALL_PIX(0),          // normal display
   U8G_ESC_CS(0),              // disable chip
+  U8G_ESC_DLY(150),           // delay 150 ms before sending any data
   U8G_ESC_END                 // end of sequence
 };
 
 static const uint8_t u8g_dev_uc1701_mini12864_HAL_data_start[] PROGMEM = {
   U8G_ESC_ADR(0),             // instruction mode
   U8G_ESC_CS(1),              // enable chip
-  #if EITHER(MKS_MINI_12864, ENDER2_STOCKDISPLAY)
+  #if ANY(MKS_MINI_12864, ENDER2_STOCKDISPLAY, FYSETC_MINI_12864)
     UC1701_START_LINE(0),     // set display start line to 0
     UC1701_ADC_REVERSE(0),    // ADC set to reverse
     UC1701_OUT_MODE(1),       // common output mode
