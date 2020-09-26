@@ -621,7 +621,7 @@
 
   // Feature: Switch into SW mode after a deploy. It makes the output pulse longer. Can be useful
   //          in special cases, like noisy or filtered input configurations.
-  //#define BLTOUCH_FORCE_SW_MODE
+  #define BLTOUCH_FORCE_SW_MODE
 
   /**
    * Settings for BLTouch Smart 3.0 and 3.1
@@ -671,7 +671,7 @@
   // Define probe X and Y positions for Z1, Z2 [, Z3 [, Z4]]
   // If not defined, probe limits will be used.
   // Override with 'M422 S<index> X<pos> Y<pos>'
- #define Z_STEPPER_ALIGN_XY { {  MIN_PROBE_EDGE, Y_BED_SIZE/2 }, { X_BED_SIZE-MIN_PROBE_EDGE,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
+ #define Z_STEPPER_ALIGN_XY { {  MIN_PROBE_EDGE, Y_BED_SIZE/2 }, { X_BED_SIZE-MIN_PROBE_EDGE-41,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
   /**
    * Orientation for the automatically-calculated probe positions.
    * Override Z stepper align points with 'M422 S<index> X<pos> Y<pos>'
@@ -1449,7 +1449,7 @@
   //#define BABYSTEP_WITHOUT_HOMING
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
-  #define BABYSTEP_MULTIPLICATOR_Z  1       // Babysteps are very small. Increase for faster motion.
+  #define BABYSTEP_MULTIPLICATOR_Z  3       // Babysteps are very small. Increase for faster motion.
   #define BABYSTEP_MULTIPLICATOR_XY 1
 
   #define DOUBLECLICK_FOR_Z_BABYSTEPPING  // Double-click on the Status Screen for Z Babystepping.

@@ -501,9 +501,10 @@
   //#define DEFAULT_Kd 440
 
   //Jef Printer
-  #define DEFAULT_Kp 17.04
-  #define DEFAULT_Ki 1.36
-  #define DEFAULT_Kd 53.21
+  #define DEFAULT_Ki 1.37
+  #define DEFAULT_Kd 50.69
+  #define DEFAULT_Kp 16.67
+
 #endif // PIDTEMP
 
 //===========================================================================
@@ -556,9 +557,9 @@
   // #define DEFAULT_bedKp 312.01 //Jeff
   // #define DEFAULT_bedKi 16.21 //Jeff
   // #define DEFAULT_bedKd 1501.63 //Jeff
-  #define DEFAULT_bedKp 52.84
-  #define DEFAULT_bedKd 1272.23
-  #define DEFAULT_bedKi 1.46
+  #define DEFAULT_bedKp 66.61
+  #define DEFAULT_bedKi 2.81
+  #define DEFAULT_bedKd 1051.59
   
 #endif // PIDTEMPBED
 
@@ -664,11 +665,11 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop. //need to be false with MINI IR //inductive sensor true
+#define Z_MIN_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the endstop. //need to be false with MINI IR //inductive sensor true
 #define X_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true //Jef Org:False // set to true to invert the logic of the probe. //need to be false with MINI IR //inductive sensor true
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false //Jef Org:False // set to true to invert the logic of the probe. //need to be false with MINI IR //inductive sensor true
 //Jef: M119 to check endstops
 /**
  * Stepper Drivers
@@ -753,7 +754,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 40 } //Jeff org:{ 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 150, 150, 20, 40 } //Jeff org:{ 300, 300, 5, 25 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -861,7 +862,7 @@
  *      - normally-open switches to 5V and D32.
  *
  */
-//#define Z_MIN_PROBE_PIN PH8//Jeff: Using  IC2 Extention port  instead // Pin 32 is the RAMPS default
+//#define Z_MIN_PROBE_PIN PH11// // Pin 32 is the RAMPS default
 
 /**
  * Probe Type
@@ -882,7 +883,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE //Jeff Org:Disabled
+//#define FIX_MOUNTED_PROBE //Jeff Org:Disabled
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -899,7 +900,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#define BLTOUCH //Jeff Org: Undefined
 
 /**
  * Touch-MI Probe by hotends.fr
@@ -964,14 +965,14 @@
  * Specify a Probe position as { X, Y, Z }
  */
 
-#define NOZZLE_TO_PROBE_OFFSET { 30, 3.5, -0.69 } // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
+#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -2 } // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 #define MIN_PROBE_EDGE 10
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 8000//4000 //Jeff Org: 8000
+#define XY_PROBE_SPEED 10000//4000 //Jeff Org: 8000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1284,7 +1285,7 @@
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
     //
-    //#define ABL_BILINEAR_SUBDIVISION
+    #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
       #define BILINEAR_SUBDIVISIONS 3
@@ -2259,7 +2260,7 @@
  * Set this manually if there are extra servos needing manual control.
  * Leave undefined or set to 0 to entirely disable the servo subsystem.
  */
-//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+#define NUM_SERVOS 1 //Jeff-org: disabled and 3 servos// Servo index starts with 0 for M280 command
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
