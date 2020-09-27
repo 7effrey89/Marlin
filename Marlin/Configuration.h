@@ -551,9 +551,9 @@
   // #define DEFAULT_bedKp 312.01 //Jeff
   // #define DEFAULT_bedKi 16.21 //Jeff
   // #define DEFAULT_bedKd 1501.63 //Jeff
-  #define DEFAULT_bedKp 66.61
-  #define DEFAULT_bedKi 2.81
-  #define DEFAULT_bedKd 1051.59
+  #define DEFAULT_bedKp 16.06//Jeff
+  #define DEFAULT_bedKi 1.50//Jeff
+  #define DEFAULT_bedKd 114.79//Jeff
   
 #endif // PIDTEMPBED
 
@@ -1001,7 +1001,7 @@
  *     O-- FRONT --+
  */
 
-#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -2 } // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
+#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -0.83} // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1102,7 +1102,7 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR false
-#define INVERT_Y_DIR false
+#define INVERT_Y_DIR false //jeff org: false
 #define INVERT_Z_DIR false 
 
 // @section extruder
@@ -1137,16 +1137,16 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 245 //Jeff Org: 200
-#define Y_BED_SIZE 200 //Jeff Org: 200
+#define X_BED_SIZE 310 //Jeff Org: 200
+#define Y_BED_SIZE 310 //Jeff Org: 200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS -60//0 //Jeff
-#define Y_MIN_POS -70//0 //Jeff
+#define X_MIN_POS -20//0 //Jeff
+#define Y_MIN_POS -20//0 //Jeff
 #define Z_MIN_POS 0
-#define X_MAX_POS 245//X_BED_SIZE //Jeff
-#define Y_MAX_POS 200//Y_BED_SIZE //Jeff
-#define Z_MAX_POS 300//200 //Jeff
+#define X_MAX_POS 290 //Jeff
+#define Y_MAX_POS 290 //Jeff
+#define Z_MAX_POS 390//200 //Jeff
 
 /**
  * Software Endstops
@@ -1412,13 +1412,13 @@
 #define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT 0// Jeff Org: X_CENTER  // X point for Z homing when homing all axes (G28).
-  #define Z_SAFE_HOMING_Y_POINT 0//Jeff Org: Y_CENTER  // Y point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_X_POINT PROBING_MARGIN// Jeff Org: X_CENTER  // X point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_Y_POINT PROBING_MARGIN//Jeff Org: Y_CENTER  // Y point for Z homing when homing all axes (G28).
 #endif
 
 // Homing speeds (mm/min)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (8*60) //Jeff Org: (4*60)
+#define HOMING_FEEDRATE_Z  (4*60) //Jeff Org: (4*60) //Jeff used to be 8*60 but a bit load
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS

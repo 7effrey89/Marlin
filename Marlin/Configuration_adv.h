@@ -450,7 +450,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN -1// Jeff Org:-1 //PE6 =Fan1
+#define E0_AUTO_FAN_PIN PE5// Jeff Org:-1 //Burde bruge PE6 =Fan1
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -719,7 +719,7 @@
   // If not defined, probe limits will be used.
   // Override with 'M422 S<index> X<pos> Y<pos>'
 
- #define Z_STEPPER_ALIGN_XY { {  PROBING_MARGIN, Y_BED_SIZE/2 }, { X_BED_SIZE-PROBING_MARGIN-41,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
+ #define Z_STEPPER_ALIGN_XY { {  PROBING_MARGIN, Y_BED_SIZE/2 }, { X_BED_SIZE-(PROBING_MARGIN*2)-41,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
   /**
    * Orientation for the automatically-calculated probe positions.
    * Override Z stepper align points with 'M422 S<index> X<pos> Y<pos>'
@@ -2425,7 +2425,7 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
+  #define STEALTHCHOP_E//Jeff org: disabled
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
