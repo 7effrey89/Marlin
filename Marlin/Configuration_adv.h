@@ -719,7 +719,7 @@
   // If not defined, probe limits will be used.
   // Override with 'M422 S<index> X<pos> Y<pos>'
 
- #define Z_STEPPER_ALIGN_XY { {  PROBING_MARGIN, Y_BED_SIZE/2 }, { X_BED_SIZE-(PROBING_MARGIN*2)-41,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
+ #define Z_STEPPER_ALIGN_XY { {  PROBING_MARGIN, Y_BED_SIZE/2 }, { X_BED_SIZE-41,  Y_BED_SIZE/2 } } //{ {  10, 190 }, { 100,  10 }, { 190, 190 } }
   /**
    * Orientation for the automatically-calculated probe positions.
    * Override Z stepper align points with 'M422 S<index> X<pos> Y<pos>'
@@ -1295,7 +1295,7 @@
   #endif
 
   // Add an optimized binary file transfer mode, initiated with 'M28 B1'
-  //#define BINARY_FILE_TRANSFER
+  //#define BINARY_FILE_TRANSFER 
 
   /**
    * Set this option to one of the following (or the board's defaults apply):

@@ -1001,7 +1001,7 @@
  *     O-- FRONT --+
  */
 
-#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -0.83} // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
+#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -1.6} // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1144,8 +1144,8 @@
 #define X_MIN_POS -20//0 //Jeff
 #define Y_MIN_POS -20//0 //Jeff
 #define Z_MIN_POS 0
-#define X_MAX_POS 290 //Jeff
-#define Y_MAX_POS 290 //Jeff
+#define X_MAX_POS 330//290 //Jeff
+#define Y_MAX_POS 330//290 //Jeff
 #define Z_MAX_POS 390//200 //Jeff
 
 /**
