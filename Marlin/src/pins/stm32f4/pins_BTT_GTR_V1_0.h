@@ -65,6 +65,23 @@
 //#define Y2_MIN_PIN                        PI7
 //#define Z_MIN_PIN                         PF6
 
+//
+// Filament Runout Sensor
+//
+//  PIN for x- is PF2
+//  PIN for y- is PC13
+//  PIN for z- is PE0
+//  PIN for E0- is PG14
+//  PIN for E1- is PG9
+//  PIN for E2- is PD3
+//  PIN for Extended-Interface-1 is PI11
+//  PIN for Extended-Interface-1 is PH6
+//  PIN for found in EXTENION-2(I2C)
+
+#ifndef FIL_RUNOUT_PIN
+  #define FIL_RUNOUT_PIN PH8
+#endif
+
 #if ENABLED(TP) && !defined(Z_MIN_PROBE_PIN)
   #define Z_MIN_PROBE_PIN                   PH11  // Z Probe must be PH11
 #endif

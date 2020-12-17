@@ -596,7 +596,7 @@
  */
 
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
-//#define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed //Jeff Org: Defined
+#define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed //Jeff Org: Defined
 //#define THERMAL_PROTECTION_CHAMBER // Enable thermal protection for the heated chamber //Jeff Org: Defined
 
 //===========================================================================
@@ -1177,7 +1177,7 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-//#define FILAMENT_RUNOUT_SENSOR //Jeff org: disabled 
+#define FILAMENT_RUNOUT_SENSOR //Jeff org: disabled 
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
@@ -1289,18 +1289,9 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 3
+  #define GRID_MAX_POINTS_X 2
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
-// <<<<<<< HEAD
-//   // Set the boundaries for probing (where the probe can reach).
-//   // #define LEFT_PROBE_BED_POSITION X_PROBE_OFFSET_FROM_EXTRUDER //MIN_PROBE_EDGE //Jeff
-//   // #define RIGHT_PROBE_BED_POSITION (X_BED_SIZE - (MIN_PROBE_EDGE)) //Jeff
-//   // #define FRONT_PROBE_BED_POSITION MIN_PROBE_EDGE //Jeff
-//   // #define BACK_PROBE_BED_POSITION (Y_BED_SIZE - (MIN_PROBE_EDGE) - abs(Y_PROBE_OFFSET_FROM_EXTRUDER)) //Jeff
-
-// =======
-// >>>>>>> upstream/bugfix-2.0.x
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
 
@@ -1314,7 +1305,7 @@
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
     //
-    #define ABL_BILINEAR_SUBDIVISION
+    //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
       #define BILINEAR_SUBDIVISIONS 3
