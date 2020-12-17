@@ -57,7 +57,7 @@ namespace Language_tr {
   PROGMEM Language_Str MSG_MAIN                            = _UxGT("Ana");
   PROGMEM Language_Str MSG_ADVANCED_SETTINGS               = _UxGT("Gelişmiş Ayarlar");
   PROGMEM Language_Str MSG_CONFIGURATION                   = _UxGT("Yapılandırma");
-  PROGMEM Language_Str MSG_AUTOSTART                       = _UxGT("Oto. Başlat");
+  PROGMEM Language_Str MSG_RUN_AUTO_FILES                  = _UxGT("Oto. Başlat");
   PROGMEM Language_Str MSG_DISABLE_STEPPERS                = _UxGT("Motorları Durdur");
   PROGMEM Language_Str MSG_DEBUG_MENU                      = _UxGT("Hata Ayıklama");
   PROGMEM Language_Str MSG_PROGRESS_BAR_TEST               = _UxGT("Durum Çubuğu Testi");
@@ -235,7 +235,7 @@ namespace Language_tr {
   PROGMEM Language_Str MSG_MOVE_E                          = _UxGT("Ekstruder");
   PROGMEM Language_Str MSG_MOVE_EN                         = _UxGT("Ekstruder *");
   PROGMEM Language_Str MSG_HOTEND_TOO_COLD                 = _UxGT("Nozul Çok Soğuk");
-  PROGMEM Language_Str MSG_MOVE_Z_DIST                     = _UxGT("%smm");
+  PROGMEM Language_Str MSG_MOVE_N_MM                       = _UxGT("%smm");
   PROGMEM Language_Str MSG_MOVE_01MM                       = _UxGT("0.1mm");
   PROGMEM Language_Str MSG_MOVE_1MM                        = _UxGT("1mm");
   PROGMEM Language_Str MSG_MOVE_10MM                       = _UxGT("10mm");
@@ -306,7 +306,7 @@ namespace Language_tr {
   PROGMEM Language_Str MSG_TEMPERATURE                     = _UxGT("Sıcaklık");
   PROGMEM Language_Str MSG_MOTION                          = _UxGT("Hareket");
   PROGMEM Language_Str MSG_FILAMENT                        = _UxGT("Filaman");
-  PROGMEM Language_Str MSG_VOLUMETRIC_ENABLED              = _UxGT("Ekstrüzyon/mm³");
+  PROGMEM Language_Str MSG_VOLUMETRIC_ENABLED              = _UxGT("Ekstrüzyon/mm") SUPERSCRIPT_THREE;
   PROGMEM Language_Str MSG_FILAMENT_DIAM                   = _UxGT("Filaman Çapı");
   PROGMEM Language_Str MSG_FILAMENT_DIAM_E                 = _UxGT("Filaman Çapı *");
   PROGMEM Language_Str MSG_FILAMENT_UNLOAD                 = _UxGT("Çıkart mm");
@@ -358,9 +358,9 @@ namespace Language_tr {
   PROGMEM Language_Str MSG_CONTROL_RETRACT_SWAP            = _UxGT("Swap Re.mm");
   PROGMEM Language_Str MSG_CONTROL_RETRACTF                = _UxGT("Geri Çekme V");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_ZHOP            = _UxGT("Atlama mm");
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER         = _UxGT("UnRet mm");
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAP    = _UxGT("S UnRet mm");
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVERF        = _UxGT("UnRet  V");
+  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER         = _UxGT("Unretr. mm");
+  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAP    = _UxGT("S Unretr. mm");
+  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVERF        = _UxGT("Unretract V");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAPF   = _UxGT("S UnRet V");
   PROGMEM Language_Str MSG_AUTORETRACT                     = _UxGT("Oto. Geri Çekme");
   PROGMEM Language_Str MSG_FILAMENT_SWAP_LENGTH            = _UxGT("G.Çekme Boyu");
@@ -590,8 +590,8 @@ namespace Language_tr {
 
 #if FAN_COUNT == 1
   #define MSG_FIRST_FAN_SPEED       MSG_FAN_SPEED
-  #define MSG_FIRST_EXTRA_FAN_SPEED MSG_EXTRA_FAN_SPEED
+  #define MSG_EXTRA_FIRST_FAN_SPEED MSG_EXTRA_FAN_SPEED
 #else
   #define MSG_FIRST_FAN_SPEED       MSG_FAN_SPEED_N
-  #define MSG_FIRST_EXTRA_FAN_SPEED MSG_EXTRA_FAN_SPEED_N
+  #define MSG_EXTRA_FIRST_FAN_SPEED MSG_EXTRA_FAN_SPEED_N
 #endif
