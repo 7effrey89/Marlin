@@ -474,7 +474,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN PE5// Jeff Org:-1 //Burde bruge PE6 =Fan1
+#define E0_AUTO_FAN_PIN PC8// Jeff Org:-1 //Burde bruge PE6 =Fan1
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -2367,8 +2367,8 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT      1000 //Jeff Org: 800
-    #define E0_MICROSTEPS    32
+    #define E0_CURRENT      800 //Jeff Org: 800
+    #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
     //#define E0_INTERPOLATE true

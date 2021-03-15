@@ -326,9 +326,9 @@
 
 #define HEATER_BED_PIN                      PA2   // Hotbed
 
-#define FAN_PIN                             PC8//PE5   // Fan0 --FAN_PIN=Partcooling FAN
+#define FAN_PIN                             PE5//PE5   // Fan0 --FAN_PIN=Partcooling FAN Tror PE5 er busted. den er 100% tændt altid
 #define FAN1_PIN                            PE6   // Fan1 --Andre fans til fx E0
-#define FAN2_PIN                            PE5//PC8   // Fan2
+#define FAN2_PIN                            PC8//PC8   // Fan2 //Tror PC8 er busted. den er 100% tændt altid
 
 #define FAN3_PIN                            PI5   // Fan3
 #define FAN4_PIN                            PE9   // Fan4

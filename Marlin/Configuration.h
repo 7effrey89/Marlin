@@ -409,7 +409,7 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#define TEMP_SENSOR_0 11
+#define TEMP_SENSOR_0 5//5 med H2 Extruder - 11 før
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -748,7 +748,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 800, 820 } //32Step burde være 830 for bmg
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 800, 932 } 
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1005,14 +1005,14 @@
  *     O-- FRONT --+
  */
 
-#define NOZZLE_TO_PROBE_OFFSET { -41, 0, -1.6} // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
+#define NOZZLE_TO_PROBE_OFFSET { -19.9, 32.8, -1.92} // X offset: -left  +right  [of the nozzle], Y offset: -front +behind [the nozzle], Z offset: -below +above  [the nozzle]
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+#define PROBING_MARGIN 20
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_SPEED 10000 //Jeff Org(133*60)
+#define XY_PROBE_SPEED 9000 //Jeff Org(133*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST (4*60)
@@ -1581,7 +1581,7 @@
 
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 205
+#define PREHEAT_1_TEMP_HOTEND 200
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
